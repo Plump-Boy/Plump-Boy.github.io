@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="C语言易错点总结"><meta name="keywords" content="C语言"><meta name="author" content="PlumpBoy,undefined"><meta name="copyright" content="PlumpBoy"><title>C语言易错点总结【PlumpBoy's Blog】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="icon" href="/favicon.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+}</script></head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/avatar.png"></div><div class="author-info-name">PlumpBoy</div><div class="author-info-description"></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">日志</span><span class="pull-bottom">4</span></a><a class="author-info-articles-tags article-meta" href="/tags"><span class="pull-top">标签</span><span class="pull-bottom">2</span></a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/tags">标签</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">PlumpBoy's Blog</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">C语言易错点总结</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2019-11-19 | 更新于 2019-11-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"></div><div class="button-hover tags"><i class="fa fa-tag article-icon" aria-hidden="true"></i><a class="link-a" href="/tags/C%E8%AF%AD%E8%A8%80/">C语言</a></div></div></div><div class="main-content"><p>本帖主要汇总我在学习C语言过程中自己出现的一些错误，踩的一些雷区，希望你看完之后能少犯一些错误 ヾ(๑╹◡╹)ﾉ”</p>
+<a id="more"></a>
+<ol>
+<li><p>标识符规范：</p>
+<pre><code>标识符必须由字母，下划线或数字组成。
+标识符必须以字母或下划线开头。
+关键字不可作为标识符。
+由于C语言中严格区分大小写，故某一字符大写的标识符仍为合法标识符，例如Int或printF（使用时不建议如此命名标识符）</code></pre></li>
+</ol>
+<ol start="2">
+<li><p>整数除以整数结果<strong>还是整数</strong>，这个结果为<strong>不大于实际结果的最大整数</strong>，如果想让结果变为小数则可以<strong>把其中一个整数变成浮点数再进行运算。</strong>求余运算时（%）注意%两边都只能是<strong>整型变量</strong>。</p>
+</li>
+<li><p>C语言中不同变量在输入输出时对应不同格式说明符，例如int类型对应%d，flout类型对应%f,double类型对应%lf（输出时也可为%f）等等，在使用时记得<strong>对应自己要输出的数据类型使用。</strong></p>
+</li>
+<li><p>printf语句与scanf语句格式问题<br>printf语句格式为printf(“格式控制”,输出列表)；所以下文中<strong>x前面没有&amp;</strong>，但是scanf语句格式，scanf（”格式控制”，地址列表);所以在下文中<strong>x前添加了&amp;。</strong></p>
+<pre><code>int x;
+scanf(&quot;%d&quot;,&amp;x);
+printf(&quot;%d&quot;,x);
+return 0;</code></pre></li>
+<li><p>printf（“%a.bd”,x）;<br>在这样的输出语句中，a叫做宽度限定词，作用是制定数据的输出宽度<strong>（符号位也计算宽度）</strong>，<strong>若数据实际位数小于a，则左端补空格，若大于a，则按实际位数输出。</strong>b的作用则是用来使浮点数输出时<strong>保留b位小数（最后一位会四舍五入）。</strong></p>
+</li>
+<li><p>printf（）中要想打印<code>\,&#39;,&quot;</code>由于它们是用于定义字符常量，是printf（）函数的一部分，直接使用会造成混乱，则应该在双引号中如此输入<code>\\,\&#39;,\&quot;</code></p>
+</li>
+<li><p>非静态局部变量使用之前<strong>要先进行赋值</strong>，例如在s=s+1这个语句中，如果s没有进行提前赋值那么出来的结果就是随机数。</p>
+<p> 静态局部变量在<strong>有static标记时</strong>，会默认初始化为0。</p>
+<p>  全局变量没有初始化值时会<strong>自动赋值0</strong>。</p>
+</li>
+<li><p>一个等号（=）是赋值运算符，<strong>作用是赋值</strong>；两个等号（==）是关系运算符，<strong>作用是判断相等</strong>，若==两边相等则表达式结果为1，否则为0。<strong>在判断相等时切记不可只用一个等号。</strong></p>
+</li>
+<li><p>在书写诸如if-else，for，while等语句的内嵌语句时，只允许是一条语句，<strong>若有多条语句，则应该使用大括号将这些语句组成复合语句，如果不打大括号，程序则只能将第一条语句作为内嵌语句执行。</strong></p>
+</li>
+<li><p>字符型变量输入可调用scanf（）和getchar（），输出可调用printf()和putchar（）。需要注意的是getchar()和putchar()只能处理单个字符，即<strong>调用一次函数只能输入或输出一个字符。</strong><br><strong>特别提示：由于空格和回车也是字符，所以在输入字符时字符间不要加空格，在字符全部输入完之后再回车</strong></p>
+</li>
+<li><p>在使用嵌套循环时，<strong>一定要明确变量对内外层循环初始化</strong>，对外层循环初始化应放在<strong>外层for之外</strong>，对内层循环初始化应放在<strong>外层for之内，内层for之外。</strong></p>
+</li>
+<li><p><strong>break只能用于switch语句和循环语句</strong></p>
+</li>
+<li><p>在下面的例子中，<strong>n只能为整型变量和字符型变量</strong>，a和b只能为<strong>常量表达式</strong>，case后面是：（冒号）而不是；（分号），如果case后面没有break，那么它将<strong>继续执行下去直到遇见break或者全部执行完毕。</strong></p>
+</li>
+</ol>
+<pre><code>switch（n）
+case(a):x=1;break;
+case(b):x=2;break;</code></pre><ol start="14">
+<li><p>break语句是<strong>跳出整个循环</strong>，而continue则是<strong>跳过下一语句</strong>。</p>
+</li>
+<li><p>i++与++i的区别：在单独使用时<strong>没有区别，都表示i=i+1</strong>,<br>但是a=++i,表示的是<strong>i=i+1；a=i；</strong><br>而a=i++，表示的是<strong>a=i；i=i+1；</strong><br>（<strong>此处涉及到运算符的优先级和结合性问题，后面会详细说明</strong>）</p>
+</li>
+</ol>
+<p>16.在if和for语句等语句后面<strong>不要加分号</strong>，例如</p>
+<pre><code>错误示例：if(a==0);
+正确示例：if(a==0)
+错误示例：for(i=0;i&lt;=10;i++);
+正确示例：for(i=0;i&lt;=10;i++)</code></pre><p>同时注意for语句中每个语句<strong>用分号间隔而不是逗号</strong>。<br>特别的，<strong>在while语句中，while后面无需加分号，而在do-while语句中while后面要加</strong>。</p>
+<p>17.数组当中下标是从0开始的，<strong>下标的合理取值范围为[0，数组长度-1]</strong>，例如一个规定了10个元素的数组a，<strong>a[10]是不存在的</strong>。它的元素为a[0]-a[9]。</p>
+<p>18.在自定义函数中，<strong>return只能返回一个函数值</strong>，如果存在多个值需要返回主函数，则应该把<strong>自定义函数类型设置为void，对于需要返回的值设置全局变量</strong>,void函数中可以存在return，但是<strong>return后面不能加任何数值，表示自定义函数到此为止</strong>。</p>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">PlumpBoy</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2019/11/19/c%E8%AF%AD%E8%A8%80%E6%98%93%E9%94%99%E7%82%B9/">http://yoursite.com/2019/11/19/c%E8%AF%AD%E8%A8%80%E6%98%93%E9%94%99%E7%82%B9/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com">PlumpBoy's Blog</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/11/19/%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2/"><i class="fas fa-angle-left">&nbsp;</i><span>手把手教你搭建个人博客</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2019/11/17/My-New-Blog/"><span>My New Blog</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2019 By PlumpBoy</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
